@@ -4,11 +4,16 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <div>HI</div>
+    <button class="mdc-button">
+      <span class="mdc-button__label">Button</span>
+    </button>
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
+@import "@material/button/mdc-button";
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
