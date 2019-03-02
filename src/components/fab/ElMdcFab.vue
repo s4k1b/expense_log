@@ -1,5 +1,9 @@
 <template>
-  <button ref="elmdcfab" class="mdc-fab mdc-fab--extended">
+  <button
+    ref="elmdcfab"
+    class="mdc-fab mdc-fab--extended"
+    @click="$emit('click')"
+  >
     <span class="material-icons mdc-fab__icon">{{ icon }}</span>
     <span class="mdc-fab__label">{{ title }}</span>
   </button>

@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Personal Cost",
+    "value": "personalcost"
+  },
+  {
+    "title": "Shared Cost",
+    "value": "sharedcost"
+  },
+  {
+    "title": "Money Loaned to",
+    "value": "moneyloanedto"
+  },
+  {
+    "title": "Money Loaned from",
+    "value": "moneyloanedfrom"
+  },
+  {
+    "title": "Money Given",
+    "value": "moneygiven"
+  },
+  {
+    "title": "Money Revieved",
+    "value": "moneyreceived"
+  }
+]
