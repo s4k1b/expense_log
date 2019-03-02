@@ -1,34 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="mdc-layout-grid">
+      <div class="mdc-layout-grid__inner">
+        <div class="mdc-layout-grid__cell--span-2">
+          <router-view name="left-side-bar"></router-view>
+        </div>
+        <div class="mdc-layout-grid__cell--span-8">
+          <router-view name="main"></router-view>
+        </div>
+        <div class="mdc-layout-grid__cell--span-2">
+          <router-view name="right-side-bar"></router-view>
+        </div>
+      </div>
     </div>
-    <div>HI</div>
-    <button class="mdc-button">
-      <span class="mdc-button__label">Button</span>
-    </button>
-    <router-view />
   </div>
 </template>
 
 <style lang="scss">
-@import "@material/button/mdc-button";
+@import "@material/layout-grid/mdc-layout-grid";
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

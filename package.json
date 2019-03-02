@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "@material/button": "^0.44.0",
+    "@material/fab": "^0.44.0",
+    "@material/layout-grid": "^0.41.0",
+    "@material/theme": "^0.43.0",
+    "npm": "^6.8.0",
     "vue": "^2.5.22",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
