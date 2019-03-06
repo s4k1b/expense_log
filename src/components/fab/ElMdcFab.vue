@@ -1,11 +1,12 @@
 <template>
   <button
     ref="elmdcfab"
-    class="mdc-fab mdc-fab--extended"
+    class="mdc-fab"
+    :class="{ 'mdc-fab--extended': extended }"
     @click="$emit('click')"
   >
     <span class="material-icons mdc-fab__icon">{{ icon }}</span>
-    <span class="mdc-fab__label">{{ title }}</span>
+    <span class="mdc-fab__label" v-if="extended">{{ title }}</span>
   </button>
 </template>
 
@@ -22,6 +23,11 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+
+    extended: {
+      type: Boolean,
+      default: false
     }
   },
 

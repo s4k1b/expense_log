@@ -4,7 +4,12 @@
       <!-- empty cell, for spacing -->
     </div>
     <div class="mdc-layout-grid__cell" id="entry_btn">
-      <el-mdc-fab icon="add" title="Entry" @click="goToFormPage()"></el-mdc-fab>
+      <el-mdc-fab
+        icon="add"
+        title="Entry"
+        :extended="true"
+        @click="goToFormPage()"
+      ></el-mdc-fab>
     </div>
   </div>
 </template>

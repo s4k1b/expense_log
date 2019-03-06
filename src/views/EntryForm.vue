@@ -6,11 +6,9 @@
     <div class="mdc-layout-grid__cell--span-12"><hr /></div>
     <div class="mdc-layout-grid__cell--span-12">
       <el-mdc-select
-        :options="entryTypeSelectOptions"
-        option-class="entry-type-option"
+        v-bind="propObForSelectEntryType"
         class="entry-type-select"
-        title="Entry Type"
-        @change="selectedEntryType = $event.value"
+        @input="selectedEntryType = $event.value"
       ></el-mdc-select>
     </div>
     <div class="mdc-layout-grid__cell--span-12">
@@ -43,8 +41,12 @@ export default {
 
   data() {
     return {
-      entryTypeSelectOptions: typesOfExpenses,
-      selectedEntryType: ""
+      selectedEntryType: "",
+      propObForSelectEntryType: {
+        options: typesOfExpenses,
+        title: "Entry type",
+        icon: "ballot"
+      }
     };
   },
 
@@ -55,7 +57,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .form-header {
   float: left;
   display: block;
@@ -63,11 +65,7 @@ export default {
   padding: 0;
 }
 
-.entry-type-option {
-  width: 700px;
-}
-
 .entry-type-select {
-  width: 700px;
+  width: 100%;
 }
 </style>
