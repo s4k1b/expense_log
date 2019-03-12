@@ -16,12 +16,13 @@
 
 <script>
 import ElMdcFab from "../components/fab/ElMdcFab.vue";
+import { firebaseMixin } from "../mixins/firebase.js";
 
 export default {
   components: {
     ElMdcFab
   },
-
+  mixins: [firebaseMixin],
   methods: {
     goToFormPage() {
       this.$router.push("entry_form");

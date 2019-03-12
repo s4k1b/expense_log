@@ -20,6 +20,7 @@
           title="Submit"
           icon="done_all"
           @click="addEntry()"
+          type="raised"
         ></el-mdc-button>
       </div>
       <div class="mdc-layout-grid__cell--span-10">
@@ -41,7 +42,7 @@ import ElMdcButton from "../button/ElMdcButton.vue";
 import InputList from "./shared/InputList.vue";
 import itemTypes from "../../types_of_items.json";
 
-import writeOb from "../../write.js";
+//import writeOb from "../../write.js";
 
 export default {
   data() {
@@ -103,12 +104,10 @@ export default {
   methods: {
     addEntry() {
       const ind = this.itemList.find(item => {
-        for (let key in item) {
-          if (item[key] === "") return true;
-        }
+        if (item.name && item.type && item.amount && item.cost) return false;
+        else return true;
       });
-      console.log(ind);
-      if (ind != -1) {
+      if (ind) {
         this.emptyField = true;
       }
       //writeOb("Personal", this.itemList);

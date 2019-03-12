@@ -1,5 +1,11 @@
 <template>
-  <button class="mdc-button mdc-button--raised" ref="button">
+  <button
+    class="mdc-button"
+    :class="buttonClass"
+    ref="button"
+    @click="$emit('click')"
+    :style="styleOb"
+  >
     <i class="material-icons mdc-button__icon" aria-hidden="true">{{ icon }}</i>
     <span class="mdc-button__label">{{ title }}</span>
   </button>
@@ -18,15 +24,33 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+
+    type: {
+      type: String,
+      default: ""
+    },
+
+    styleOb: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
+  computed: {
+    buttonClass() {
+      if (this.type === "raised") return "mdc-button--raised";
+      if (this.type === "outlined") return "mdc-button--outlined";
+      else return "";
     }
   },
 
   mounted() {
-    this.ripple = new MDCRipple(this.$refs.button);
+    this.buttonripple = new MDCRipple(this.$refs.button);
   },
 
   destroyed() {
-    this.ripple.destroy();
+    this.buttonripple.destroy();
   }
 };
 </script>

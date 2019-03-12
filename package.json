@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material/button": "^0.44.0",
+    "@material/chips": "^1.0.1",
     "@material/fab": "^0.44.0",
     "@material/floating-label": "^0.44.1",
     "@material/layout-grid": "^0.41.0",
@@ -18,11 +19,14 @@
     "@material/select": "^0.44.1",
     "@material/textfield": "^0.44.1",
     "@material/theme": "^0.43.0",
-    "npm": "^6.8.0",
+    "@material/top-app-bar": "^1.0.0",
+    "firebase": "^5.8.5",
+    "npm": "^6.9.0",
     "vue": "^2.5.22",
     "vue-datepicker": "^1.3.0",
     "vue-material-datepicker": "^2.0.1",
     "vue-router": "^3.0.1",
+    "vuefire": "^1.4.5",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
