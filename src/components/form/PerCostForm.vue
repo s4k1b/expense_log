@@ -41,6 +41,7 @@ import ElMdcInput from "../input/ElMdcInput.vue";
 import ElMdcButton from "../button/ElMdcButton.vue";
 import InputList from "./shared/InputList.vue";
 import itemTypes from "../../types_of_items.json";
+import { databaseMixin } from "../../mixins/database.js";
 
 //import writeOb from "../../write.js";
 
@@ -85,6 +86,8 @@ export default {
     };
   },
 
+  mixins: [databaseMixin],
+
   computed: {
     totalCost() {
       if (this.itemList.length == 0) return 0;
@@ -109,6 +112,20 @@ export default {
       });
       if (ind) {
         this.emptyField = true;
+      } else {
+        if (this.inputDate && this.description) {
+          // Create entry object
+          const entryOb = {
+            type: "personal",
+            date: this.inputDate.value,
+            description: this.description,
+            items: this.itemList
+          };
+
+          this.addEntryToDb(entryOb);
+        } else {
+          this.emptyField = true;
+        }
       }
       //writeOb("Personal", this.itemList);
     }
