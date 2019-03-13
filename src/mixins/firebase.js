@@ -45,7 +45,7 @@ export const firebaseMixin = {
         .catch(function() {
           // An error happened.
         });
-      if (signOutSucc) this.$store.commit("user$set", { displayName: "" });
+      if (signOutSucc) this.$store.commit("user$set", {});
     }
   }
 };
