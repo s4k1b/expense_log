@@ -9,6 +9,7 @@ import "./theme.scss";
 
 Vue.config.productionTip = false;
 
+//firebase
 var config = {
   apiKey: "AIzaSyBQsbxd4xNm8InJNHxCLVB_tVGcNWim7qo",
   authDomain: "expense-log-s4k1b.firebaseapp.com",
@@ -19,6 +20,34 @@ var config = {
 };
 firebase.initializeApp(config);
 global.fs = firebase;
+
+//snackbar
+import VueSnackbar from "vue-snack";
+import "vue-snack/dist/vue-snack.min.css";
+
+Vue.use(VueSnackbar, {
+  // Possible values: 'top', 'top-left', 'top-right', 'bottom', 'bottom-left'
+  // default 'bottom'
+  position: "bottom-left",
+  // default 7500
+  time: 7500,
+  // default false
+  close: true,
+  // default []
+  methods: [
+    {
+      // default ''
+      name: "successful",
+      // Any valid HTML color
+      // default '#ecf0f1'
+      color: "#00b300"
+    },
+    {
+      name: "unsuccessful",
+      color: "#ff0000"
+    }
+  ]
+});
 
 new Vue({
   router,

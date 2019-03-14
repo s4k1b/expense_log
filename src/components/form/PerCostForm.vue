@@ -1,34 +1,17 @@
 <template>
   <div>
-    <el-mdc-input
-      title="Date"
-      icon="event"
-      type="date"
-      v-model="inputDate"
-      class="input-date"
-    ></el-mdc-input>
-    <el-mdc-text-area
-      rows="2"
-      title="Description"
-      @input="description = $event"
-    ></el-mdc-text-area>
+    <el-mdc-input title="Date" icon="event" type="date" v-model="inputDate" class="input-date"></el-mdc-input>
+    <el-mdc-text-area rows="2" title="Description" @input="description = $event"></el-mdc-text-area>
     <input-list :fields="fields" v-model="itemList"></input-list>
-    <hr />
+    <hr>
     <div class="mdc-layout-grid__inner">
       <div class="mdc-layout-grid__cell--span-2">
-        <el-mdc-button
-          title="Submit"
-          icon="done_all"
-          @click="addEntry()"
-          type="raised"
-        ></el-mdc-button>
+        <el-mdc-button title="Submit" icon="done_all" @click="addEntry()" type="raised"></el-mdc-button>
       </div>
       <div class="mdc-layout-grid__cell--span-10">
-        <span class="error-msg" v-show="emptyField"
-          >Please fill out all the fields</span
-        >
         <div class="total-cost">
-          Total Cost: <span class="amount">{{ totalCost }}</span> tk
+          Total Cost:
+          <span class="amount">{{ totalCost }}</span> tk
         </div>
       </div>
     </div>
@@ -110,11 +93,12 @@ export default {
         if (item.name && item.type && item.amount && item.cost) return false;
         else return true;
       });
-      if (ind) {
+      if (this.itemList.length === 0 || ind) {
         this.emptyField = true;
       } else {
         if (this.inputDate && this.description) {
           // Create entry object
+          this.emptyField = false;
           const entryOb = {
             type: "personal",
             date: this.inputDate.value,
@@ -127,7 +111,13 @@ export default {
           this.emptyField = true;
         }
       }
-      //writeOb("Personal", this.itemList);
+      if (this.emptyField) {
+        //show form fillum requirement
+        this.$snack.unsuccessful({
+          text: "Please fill out all the required fields",
+          button: "⚠"
+        });
+      }
     }
   },
 

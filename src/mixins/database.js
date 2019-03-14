@@ -9,17 +9,39 @@ export const databaseMixin = {
   },
 
   methods: {
-    addEntryToDb(ob) {
-      firebase
+    async addEntryToDb(ob) {
+      if (!this.userId) {
+        this.$snack.unsuccessful({
+          text: "Please login first",
+          button: "⚠"
+        });
+        return;
+      }
+
+      let success = false;
+      await firebase
         .database()
-        .ref("/" + this.userId)
+        .ref("/" + this.userId + "/logs")
+        .push()
         .set(ob, function(error) {
-          if(error) {
-            console.log("data write failed");
+          if (error) {
+            success = false;
           } else {
-            console.log("data successfully written")
+            success = true;
           }
         });
+      if (success) {
+        this.$router.push("/");
+        this.$snack.successful({
+          text: "Successfully added entry",
+          button: "✔"
+        });
+      } else {
+        this.$snack.unsuccessful({
+          text: "Failed to add entry",
+          button: "⚠"
+        });
+      }
     }
   }
 };
