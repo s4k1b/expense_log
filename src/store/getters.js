@@ -1,3 +1,5 @@
 export default {
-  user: state => state.user
+  user: state => state.user,
+  logs: state => state.logs,
+  filteredLogs: state => state.filteredLogs
 };

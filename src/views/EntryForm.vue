@@ -1,9 +1,8 @@
 <template>
-  <div class="mdc-layout-grid__inner">
-    <div class="mdc-layout-grid__cell--span-12">
+  <div class="mdc-layout-grid__inner form-div">
+    <div class="mdc-layout-grid__cell--span-12 header-div">
       <h2 class="form-header">Entry Form</h2>
     </div>
-    <div class="mdc-layout-grid__cell--span-12"><hr /></div>
     <div class="mdc-layout-grid__cell--span-12">
       <el-mdc-select
         v-bind="propObForSelectEntryType"
@@ -62,7 +61,27 @@ export default {
   float: left;
   display: block;
   margin: 0;
-  padding: 0;
+  /* padding: 2%;
+  border-radius: 15px;
+  border-left: 3px solid #0077ce;
+  border-bottom: 3px solid #0077ce; */
+}
+
+.header-div {
+  padding: 2%;
+  border-radius: 5px 20px 10px 15px;
+  border-left: 5px solid #0077ce;
+  border-bottom: 0px solid #0077ce;
+  box-shadow: 0px 0px 3px grey;
+  background-color: rgb(221, 225, 231);
+}
+
+.form-div {
+  padding: 4%;
+  border: 0px solid grey;
+  box-shadow: 0px 0px 8px grey;
+  border-radius: 5px;
+  background-color: rgb(247, 249, 250);
 }
 
 .entry-type-select {

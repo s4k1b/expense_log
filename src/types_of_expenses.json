@@ -1,26 +1,32 @@
 [
   {
     "title": "Personal Cost",
-    "value": "personalcost"
+    "value": "personalcost",
+    "icon": "009-debit-card"
   },
   {
     "title": "Shared Cost",
-    "value": "sharedcost"
+    "value": "sharedcost",
+    "icon": "023-money-exchange"
   },
   {
     "title": "Money Loaned to",
-    "value": "moneyloanedto"
+    "value": "moneyloanedto",
+    "icon": "020-money-bag"
   },
   {
     "title": "Money Loaned from",
-    "value": "moneyloanedfrom"
+    "value": "moneyloanedfrom",
+    "icon": "013-profit"
   },
   {
     "title": "Money Given",
-    "value": "moneygiven"
+    "value": "moneygiven",
+    "icon": "027-payment-1"
   },
   {
     "title": "Money Revieved",
-    "value": "moneyreceived"
+    "value": "moneyreceived",
+    "icon": "001-atm"
   }
 ]

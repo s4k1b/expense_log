@@ -1,7 +1,10 @@
 import * as firebase from "firebase";
+import { databaseMixin } from "./database";
 export const firebaseMixin = {
+  mixins: [databaseMixin],
   methods: {
     async login() {
+      // console.log("entered login func");
       var provider = new firebase.auth.GoogleAuthProvider();
 
       let userOb = {};
@@ -31,7 +34,11 @@ export const firebaseMixin = {
           //var credential = error.credential;
           // ...
         });
-      this.$store.commit("user$set", { ...userOb });
+      if (userOb) {
+        this.$store.commit("user$set", { ...userOb });
+        await this.getEntryList();
+        this.$router.push("/");
+      }
     },
 
     async logout() {
@@ -45,7 +52,10 @@ export const firebaseMixin = {
         .catch(function() {
           // An error happened.
         });
-      if (signOutSucc) this.$store.commit("user$set", {});
+      if (signOutSucc) {
+        this.$store.commit("user$set", {});
+        this.$router.push("/login_first");
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea personal"
+    class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea"
     ref="textarea"
   >
     <textarea
@@ -55,6 +55,6 @@ export default {
 </script>
 <style scoped>
 .personal {
-  box-shadow: 1px 1px 2px grey;
+  box-shadow: 0px 0px 2px grey;
 }
 </style>

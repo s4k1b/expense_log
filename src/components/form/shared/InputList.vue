@@ -4,6 +4,7 @@
       <li
         v-for="(respItem, index) in respItems"
         :key="`resp-item-${respItem.id}`"
+        class="item"
         @mouseenter="respItem.delShow = true"
         @mouseleave="respItem.delShow = false"
       >
@@ -11,7 +12,7 @@
           <li
             v-for="(field, fidx) in fields"
             :key="`resp-item-field-${respItem.id}-${fidx}`"
-            class="mdc-layout-grid__cell--span-3"
+            :class="`mdc-layout-grid__cell--span-${span}`"
           >
             <component
               :is="field.component"
@@ -53,6 +54,11 @@ export default {
     fields: {
       type: Array,
       default: () => []
+    },
+
+    span: {
+      type: Number,
+      default: 3
     }
   },
 
@@ -122,10 +128,13 @@ ul {
 
 .item-card {
   margin-top: 2%;
+  padding: 1em;
+  box-shadow: 0px 0px 2px grey;
+  background-color: rgb(237, 237, 253);
 }
 
-.card-items {
-  margin-top: 1%;
+.item-card .item + .item {
+  margin-top: 0.9em;
 }
 
 .input-items {
@@ -133,6 +142,7 @@ ul {
 }
 
 .add-btn {
+  margin-top: -1.5%;
   margin-bottom: 1%;
   height: 2.5em;
   width: 9em;

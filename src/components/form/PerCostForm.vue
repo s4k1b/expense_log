@@ -1,12 +1,32 @@
 <template>
   <div>
-    <el-mdc-input title="Date" icon="event" type="date" v-model="inputDate" class="input-date"></el-mdc-input>
-    <el-mdc-text-area rows="2" title="Description" @input="description = $event"></el-mdc-text-area>
+    <el-mdc-input
+      title="Date"
+      icon="event"
+      type="date"
+      v-model="inputDate"
+      class="input-date"
+    ></el-mdc-input>
+    <el-mdc-text-area
+      rows="2"
+      title="Description"
+      @input="description = $event"
+    ></el-mdc-text-area>
+    <div class="mdc-layout-grid__inner">
+      <div class="mdc-layout-grid__cell--span-12">
+        <div class="list-title-div items">Items</div>
+      </div>
+    </div>
     <input-list :fields="fields" v-model="itemList"></input-list>
-    <hr>
+    <hr />
     <div class="mdc-layout-grid__inner">
       <div class="mdc-layout-grid__cell--span-2">
-        <el-mdc-button title="Submit" icon="done_all" @click="addEntry()" type="raised"></el-mdc-button>
+        <el-mdc-button
+          title="Submit"
+          icon="done_all"
+          @click="addEntry()"
+          type="raised"
+        ></el-mdc-button>
       </div>
       <div class="mdc-layout-grid__cell--span-10">
         <div class="total-cost">
@@ -100,7 +120,7 @@ export default {
           // Create entry object
           this.emptyField = false;
           const entryOb = {
-            type: "personal",
+            type: "personalcost",
             date: this.inputDate.value,
             description: this.description,
             items: this.itemList
@@ -146,7 +166,6 @@ export default {
   float: left;
 }
 .total-cost {
-  width: 9em;
   display: block;
   float: right;
   padding: 0.4em;
@@ -161,5 +180,23 @@ export default {
 }
 hr {
   margin-bottom: 1em;
+  height: 0.1em;
+  background-color: #0099cc;
+  border-radius: 10px;
+}
+.list-title-div {
+  margin-top: 1em;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 1.2em;
+  background-color: #0099cc;
+  color: #fff;
+  border-radius: 5px 20px 5px 15px;
+  padding-left: 0.6em;
+  padding-bottom: 0.3em;
+  padding-right: 0.6em;
+  padding-top: 0.3em;
+}
+.items {
+  width: 50px;
 }
 </style>

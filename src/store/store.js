@@ -8,7 +8,22 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {}
+    user: {},
+    logs: {},
+    filteredLogs: {},
+    searchText: "",
+    paginationItemCount: null,
+    pagination: {
+      itemsPerPage: 10,
+      start: 0,
+      end: 10,
+
+      innerTable: {
+        itemsPerPage: 5,
+        start: 0,
+        end: 5
+      }
+    }
   },
   getters,
   mutations,

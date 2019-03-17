@@ -42,6 +42,17 @@ export const databaseMixin = {
           button: "⚠"
         });
       }
+    },
+
+    async getEntryList() {
+      let entryListRef = await firebase
+        .database()
+        .ref("/" + this.userId + "/logs");
+      const vm = this;
+      entryListRef.on("value", function(snapshot) {
+        vm.$store.commit("logs$set", snapshot.val());
+        vm.$store.commit("filteredLogs");
+      });
     }
   }
 };

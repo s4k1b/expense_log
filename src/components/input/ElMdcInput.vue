@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon personal"
+    class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon"
     ref="input"
   >
     <i class="material-icons mdc-text-field__icon">{{ icon }}</i>
@@ -112,6 +112,6 @@ export default {
 </script>
 <style scoped>
 .personal {
-  box-shadow: 1px 1px 2px grey;
+  box-shadow: 0px 0px 3px grey;
 }
 </style>

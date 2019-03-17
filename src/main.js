@@ -28,9 +28,9 @@ import "vue-snack/dist/vue-snack.min.css";
 Vue.use(VueSnackbar, {
   // Possible values: 'top', 'top-left', 'top-right', 'bottom', 'bottom-left'
   // default 'bottom'
-  position: "bottom-left",
+  position: "bottom-right",
   // default 7500
-  time: 7500,
+  time: 2500,
   // default false
   close: true,
   // default []
