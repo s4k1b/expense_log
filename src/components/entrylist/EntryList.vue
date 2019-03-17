@@ -2,8 +2,8 @@
   <div>
     <template
       v-if="
-        Object.keys(filteredLogs).length === 0 &&
-          filteredLogs.constructor === Object
+        Object.keys(reversedFilteredLogs).length === 0 &&
+          reversedFilteredLogs.constructor === Object
       "
     >
       <ul class="mdc-list" ref="entrylist">
@@ -13,7 +13,7 @@
     <template v-else>
       <ul class="mdc-list mdc-list--two-line" ref="entrylist">
         <li role="separator" class="mdc-list-divider"></li>
-        <template v-for="(value, key) in filteredLogs">
+        <template v-for="(value, key) in reversedFilteredLogs">
           <li class="mdc-list-item entry-list-item" :key="`title-${key}`">
             <img class="entry-icon" :src="getIcon(value.type)" alt="icon" />
             <span class="mdc-list-item__text">
@@ -43,7 +43,15 @@ import typesOfExpenses from "../../types_of_expenses.json";
 
 export default {
   computed: {
-    ...mapGetters(["filteredLogs"])
+    ...mapGetters(["filteredLogs"]),
+
+    reversedFilteredLogs() {
+      const keys = Object.keys(this.filteredLogs);
+      keys.reverse();
+      let o = {};
+      keys.forEach(key => (o[`${key}`] = this.filteredLogs[`${key}`]));
+      return o;
+    }
   },
 
   methods: {

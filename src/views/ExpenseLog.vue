@@ -13,7 +13,8 @@
         <div class="mdc-layout-grid__cell--span-3">
           <el-mdc-select
             v-bind="propObForSelectEntryType"
-            @input="selectedEntryType = $event.value"
+            @input="$store.dispatch('selectedEntryType$set', $event.value)"
+            class="select-entry"
           ></el-mdc-select>
         </div>
         <div class="mdc-layout-grid__cell--span-3">
@@ -24,16 +25,28 @@
             @input="$store.dispatch('searchText$set', $event.value)"
           ></el-mdc-input>
         </div>
-        <div class="mdc-layout-grid__cell--span-4 pagination">
+        <div
+          class="mdc-layout-grid__cell--span-4 pagination"
+          v-show="paginationItemCount > 0"
+        >
           <div class="mdc-layout-grid__inner">
             <div class="mdc-layout-grid__cell--span-7 pagi-info">
-              Showing 1-10 of 50
+              Showing {{ pagination.start + 1 }}-{{ pagination.end }} of
+              {{ paginationItemCount }}
             </div>
             <div class="mdc-layout-grid__cell--span-2">
-              <el-mdc-fab icon="chevron_left" class="navigation"></el-mdc-fab>
+              <el-mdc-fab
+                icon="chevron_left"
+                class="navigation"
+                @click="prevPage()"
+              ></el-mdc-fab>
             </div>
             <div class="mdc-layout-grid__cell--span-2">
-              <el-mdc-fab icon="chevron_right" class="navigation"></el-mdc-fab>
+              <el-mdc-fab
+                icon="chevron_right"
+                class="navigation"
+                @click="nextPage()"
+              ></el-mdc-fab>
             </div>
           </div>
         </div>
@@ -52,6 +65,7 @@ import ElMdcInput from "../components/input/ElMdcInput.vue";
 import ElMdcFab from "../components/fab/ElMdcFab.vue";
 import EntryList from "../components/entrylist/EntryList.vue";
 import { firebaseMixin } from "../mixins/firebase.js";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -70,13 +84,39 @@ export default {
     EntryList
   },
   mixins: [firebaseMixin],
+  computed: {
+    ...mapGetters(["pagination", "paginationItemCount"])
+  },
   methods: {
     goToFormPage() {
       this.$router.push("entry_form");
+    },
+    nextPage() {
+      const itemsPerPage = this.pagination.itemsPerPage;
+      let start = this.pagination.start;
+      // let end = this.pagination.end;
+      start = start + itemsPerPage;
+      if (start >= this.paginationItemCount) return;
+      // end = Math.min(start + itemsPerPage, this.paginationItemCount);
+      this.$store.commit("pagination$set", { start });
+      this.$store.commit("filteredLogs");
+    },
+    prevPage() {
+      const itemsPerPage = this.pagination.itemsPerPage;
+      let start = this.pagination.start;
+      // let end = this.pagination.end;
+      start = start - itemsPerPage;
+      if (start < 0) return;
+      // end = Math.min(start + itemsPerPage, this.paginationItemCount);
+      this.$store.commit("pagination$set", { start });
+      this.$store.commit("filteredLogs");
     }
   },
   created() {
     this.$store.commit("searchText$set", ""); // reset searchText
+    this.$store.commit("selectedEntryType$set", ""); // reset selectedType
+    this.$store.commit("pagination$set", { start: 0 }); // reset pagination
+    this.$store.commit("filteredLogs");
   }
 };
 </script>
@@ -102,6 +142,10 @@ export default {
   padding-top: 0.6em;
 }
 .pagi-info {
-  padding-top: 0.6em;
+  padding-top: 0.7em;
+  font-size: 0.9em;
+}
+.select-entry {
+  width: 100%;
 }
 </style>

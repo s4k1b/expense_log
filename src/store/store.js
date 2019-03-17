@@ -12,17 +12,12 @@ export default new Vuex.Store({
     logs: {},
     filteredLogs: {},
     searchText: "",
+    selectedEntryType: "",
     paginationItemCount: null,
     pagination: {
       itemsPerPage: 10,
       start: 0,
-      end: 10,
-
-      innerTable: {
-        itemsPerPage: 5,
-        start: 0,
-        end: 5
-      }
+      end: 10
     }
   },
   getters,

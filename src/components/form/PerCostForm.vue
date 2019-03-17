@@ -3,7 +3,7 @@
     <el-mdc-input
       title="Date"
       icon="event"
-      type="date"
+      type="datetime-local"
       v-model="inputDate"
       class="input-date"
     ></el-mdc-input>
