@@ -3,7 +3,16 @@ export default {
     state.user = o;
   },
   logs$set(state, o) {
-    state.logs = o;
+    //sort item by date
+    let newOb = {};
+    const logKeys = Object.keys(o);
+    logKeys.sort((logKey1, logKey2) => {
+      if (o[`${logKey1}`].date > o[`${logKey2}`].date) return -1;
+      else if (o[`${logKey1}`].date < o[`${logKey2}`].date) return 1;
+      else return 0;
+    });
+    logKeys.forEach(logKey => (newOb[`${logKey}`] = o[`${logKey}`]));
+    state.logs = newOb;
   },
   searchText$set(state, searchText) {
     state.searchText = searchText;
@@ -12,18 +21,6 @@ export default {
     state.selectedEntryType = selectedEntryType;
   },
   filteredLogs(state) {
-    const sortedLogs = function(logs) {
-      let newOb = {};
-      const logKeys = Object.keys(logs);
-      logKeys.sort((logKey1, logKey2) => {
-        if (logs[`${logKey1}`] < logs[`${logKey2}`]) return -1;
-        else if (logs[`${logKey1}`] > logs[`${logKey2}`]) return 1;
-        else return 0;
-      });
-      logKeys.forEach(logKey => (newOb[`${logKey}`] = logs[`${logKey}`]));
-      return newOb;
-    };
-
     if (state.searchText) {
       const regExp = new RegExp(state.searchText, "i");
       const logKeys = Object.keys(state.logs).filter(log => {
@@ -35,9 +32,9 @@ export default {
 
       let newOb = {};
       logKeys.forEach(logKey => (newOb[`${logKey}`] = state.logs[`${logKey}`]));
-      state.filteredLogs = sortedLogs(newOb);
+      state.filteredLogs = newOb;
     } else {
-      state.filteredLogs = sortedLogs(state.logs);
+      state.filteredLogs = state.logs;
     }
     //for type selection
     let newObType = {};
@@ -49,7 +46,7 @@ export default {
     logKeys.forEach(
       logKey => (newObType[`${logKey}`] = state.filteredLogs[`${logKey}`])
     );
-    state.filteredLogs = sortedLogs(newObType);
+    state.filteredLogs = newObType;
 
     //for pagination
     newObType = {};
@@ -66,7 +63,7 @@ export default {
     );
     state.pagination.start = start;
     state.pagination.end = end;
-    state.filteredLogs = sortedLogs(newObType);
+    state.filteredLogs = newObType;
   },
   pagination$set(state, pagination) {
     state.pagination = {

@@ -108,23 +108,14 @@ export default {
 
   mounted() {
     var today = new Date().toJSON().slice(0, 16);
-    // var dd = today.getDate();
-    // var mm = today.getMonth() + 1; //January is 0!
-    // var yyyy = today.getFullYear();
-
-    // if (dd < 10) {
-    //   dd = "0" + dd;
-    // }
-
-    // if (mm < 10) {
-    //   mm = "0" + mm;
-    // }
-
-    // today = yyyy + "-" + mm + "-" + dd;
     this.inputDate = { value: today };
   },
 
   methods: {
+    convDateStrToNum(str) {
+      const d = new Date(str);
+      return d.getTime();
+    },
     addEntry() {
       const ind = this.itemList.find(item => {
         if (item.name && item.type && item.amount && item.cost) return false;
@@ -138,7 +129,7 @@ export default {
           this.emptyField = false;
           const entryOb = {
             type: "personalcost",
-            date: this.inputDate.value,
+            date: this.convDateStrToNum(this.inputDate.value),
             description: this.description,
             items: this.itemList
           };

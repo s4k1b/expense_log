@@ -4,7 +4,7 @@
       v-model="inputDate"
       title="Date"
       icon="event"
-      type="date"
+      type="datetime-local"
       class="input-date"
     ></el-mdc-input>
     <el-mdc-text-area
@@ -92,24 +92,15 @@ export default {
   },
 
   mounted() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-
-    today = yyyy + "-" + mm + "-" + dd;
+    var today = new Date().toJSON().slice(0, 16);
     this.inputDate = { value: today };
   },
 
   methods: {
+    convDateStrToNum(str) {
+      const d = new Date(str);
+      return d.getTime();
+    },
     addEntry() {
       const ind = this.itemList.find(item => {
         if (item.name && item.amount) return false;
@@ -123,7 +114,7 @@ export default {
           this.emptyField = false;
           const entryOb = {
             type: "moneyreceived",
-            date: this.inputDate.value,
+            date: this.convDateStrToNum(this.inputDate.value),
             description: this.description,
             items: this.itemList
           };
