@@ -12,6 +12,18 @@ export default {
     state.selectedEntryType = selectedEntryType;
   },
   filteredLogs(state) {
+    const sortedLogs = function(logs) {
+      let newOb = {};
+      const logKeys = Object.keys(logs);
+      logKeys.sort((logKey1, logKey2) => {
+        if (logs[`${logKey1}`] < logs[`${logKey2}`]) return -1;
+        else if (logs[`${logKey1}`] > logs[`${logKey2}`]) return 1;
+        else return 0;
+      });
+      logKeys.forEach(logKey => (newOb[`${logKey}`] = logs[`${logKey}`]));
+      return newOb;
+    };
+
     if (state.searchText) {
       const regExp = new RegExp(state.searchText, "i");
       const logKeys = Object.keys(state.logs).filter(log => {
@@ -23,9 +35,9 @@ export default {
 
       let newOb = {};
       logKeys.forEach(logKey => (newOb[`${logKey}`] = state.logs[`${logKey}`]));
-      state.filteredLogs = newOb;
+      state.filteredLogs = sortedLogs(newOb);
     } else {
-      state.filteredLogs = state.logs;
+      state.filteredLogs = sortedLogs(state.logs);
     }
     //for type selection
     let newObType = {};
@@ -37,7 +49,7 @@ export default {
     logKeys.forEach(
       logKey => (newObType[`${logKey}`] = state.filteredLogs[`${logKey}`])
     );
-    state.filteredLogs = newObType;
+    state.filteredLogs = sortedLogs(newObType);
 
     //for pagination
     newObType = {};
@@ -54,7 +66,7 @@ export default {
     );
     state.pagination.start = start;
     state.pagination.end = end;
-    state.filteredLogs = newObType;
+    state.filteredLogs = sortedLogs(newObType);
   },
   pagination$set(state, pagination) {
     state.pagination = {

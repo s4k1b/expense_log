@@ -1,5 +1,5 @@
 <template>
-  <div class="mdc-select mdc-select--outlined" ref="select">
+  <div ref="select" class="mdc-select mdc-select--outlined">
     <!-- Other elements from the native or enhanced select remain. -->
     <i class="material-icons mdc-select__icon">{{ icon }}</i>
     <input type="hidden" name="enhanced-select" />
@@ -16,10 +16,10 @@
           data-value=""
         ></li>
         <li
-          class="mdc-list-item"
           v-for="(option, index) in options"
-          :data-value="option.value"
           :key="`${option.value}-${index}`"
+          class="mdc-list-item"
+          :data-value="option.value"
         >
           {{ option.title }}
         </li>
@@ -29,8 +29,8 @@
       <div class="mdc-notched-outline__leading"></div>
       <div class="mdc-notched-outline__notch">
         <label
-          class="mdc-floating-label mdc-floating-label--float-above"
           ref="selectfloatinglabel"
+          class="mdc-floating-label mdc-floating-label--float-above"
           >{{ title }}</label
         >
       </div>

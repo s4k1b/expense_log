@@ -1,7 +1,7 @@
 <template>
   <div
-    class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea"
     ref="textarea"
+    class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--textarea"
   >
     <textarea
       id="textarea"
@@ -14,9 +14,9 @@
       <div class="mdc-notched-outline__leading"></div>
       <div class="mdc-notched-outline__notch">
         <label
+          ref="textareafloatinglabel"
           for="textarea"
           class="mdc-floating-label"
-          ref="textareafloatinglabel"
           >{{ title }}</label
         >
       </div>

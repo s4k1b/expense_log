@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-mdc-input
+      v-model="inputDate"
       title="Date"
       icon="event"
       type="datetime-local"
-      v-model="inputDate"
       class="input-date"
     ></el-mdc-input>
     <el-mdc-text-area
@@ -17,15 +17,15 @@
         <div class="list-title-div items">Items</div>
       </div>
     </div>
-    <input-list :fields="fields" v-model="itemList"></input-list>
+    <input-list v-model="itemList" :fields="fields"></input-list>
     <hr />
     <div class="mdc-layout-grid__inner">
       <div class="mdc-layout-grid__cell--span-2">
         <el-mdc-button
           title="Submit"
           icon="done_all"
-          @click="addEntry()"
           type="raised"
+          @click="addEntry()"
         ></el-mdc-button>
       </div>
       <div class="mdc-layout-grid__cell--span-10">
@@ -49,6 +49,14 @@ import { databaseMixin } from "../../mixins/database.js";
 //import writeOb from "../../write.js";
 
 export default {
+  components: {
+    ElMdcTextArea,
+    ElMdcInput,
+    ElMdcButton,
+    InputList
+  },
+
+  mixins: [databaseMixin],
   data() {
     return {
       description: "",
@@ -89,8 +97,6 @@ export default {
     };
   },
 
-  mixins: [databaseMixin],
-
   computed: {
     totalCost() {
       if (this.itemList.length == 0) return 0;
@@ -100,11 +106,22 @@ export default {
     }
   },
 
-  components: {
-    ElMdcTextArea,
-    ElMdcInput,
-    ElMdcButton,
-    InputList
+  mounted() {
+    var today = new Date().toJSON().slice(0, 16);
+    // var dd = today.getDate();
+    // var mm = today.getMonth() + 1; //January is 0!
+    // var yyyy = today.getFullYear();
+
+    // if (dd < 10) {
+    //   dd = "0" + dd;
+    // }
+
+    // if (mm < 10) {
+    //   mm = "0" + mm;
+    // }
+
+    // today = yyyy + "-" + mm + "-" + dd;
+    this.inputDate = { value: today };
   },
 
   methods: {
@@ -139,24 +156,6 @@ export default {
         });
       }
     }
-  },
-
-  mounted() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-
-    today = yyyy + "-" + mm + "-" + dd;
-    this.inputDate = { value: today };
   }
 };
 </script>

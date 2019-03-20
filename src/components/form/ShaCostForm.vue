@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-mdc-input
+      v-model="inputDate"
       title="Date"
       icon="event"
       type="date"
-      v-model="inputDate"
       class="input-date"
     ></el-mdc-input>
     <el-mdc-text-area
@@ -17,7 +17,7 @@
         <div class="list-title-div items">Items</div>
       </div>
     </div>
-    <input-list :fields="fields" v-model="itemList"></input-list>
+    <input-list v-model="itemList" :fields="fields"></input-list>
     <hr />
     <div class="mdc-layout-grid__inner">
       <div class="mdc-layout-grid__cell--span-12">
@@ -30,18 +30,18 @@
     <div class="mdc-layout-grid__inner my-cost">
       <div class="mdc-layout-grid__cell--span-6">
         <el-mdc-input
+          v-model="needToPay"
           title="I need to pay"
           icon="create"
           type="text"
-          v-model="needToPay"
         ></el-mdc-input>
       </div>
       <div class="mdc-layout-grid__cell--span-6">
         <el-mdc-input
+          v-model="paid"
           title="I paid"
           icon="create"
           type="text"
-          v-model="paid"
         ></el-mdc-input>
       </div>
     </div>
@@ -51,8 +51,8 @@
       </div>
     </div>
     <input-list
-      :fields="participantsField"
       v-model="participantList"
+      :fields="participantsField"
       span="4"
     ></input-list>
     <hr />
@@ -60,8 +60,8 @@
       <el-mdc-button
         title="Submit"
         icon="done_all"
-        @click="addEntry()"
         type="raised"
+        @click="addEntry()"
       ></el-mdc-button>
     </div>
   </div>
@@ -78,6 +78,14 @@ import { databaseMixin } from "../../mixins/database.js";
 //import writeOb from "../../write.js";
 
 export default {
+  components: {
+    ElMdcTextArea,
+    ElMdcInput,
+    ElMdcButton,
+    InputList
+  },
+
+  mixins: [databaseMixin],
   data() {
     return {
       description: "",
@@ -145,8 +153,6 @@ export default {
     };
   },
 
-  mixins: [databaseMixin],
-
   computed: {
     totalCost() {
       if (this.itemList.length == 0) return 0;
@@ -156,11 +162,22 @@ export default {
     }
   },
 
-  components: {
-    ElMdcTextArea,
-    ElMdcInput,
-    ElMdcButton,
-    InputList
+  mounted() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    today = yyyy + "-" + mm + "-" + dd;
+    this.inputDate = { value: today };
   },
 
   methods: {
@@ -207,24 +224,6 @@ export default {
         });
       }
     }
-  },
-
-  mounted() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-
-    today = yyyy + "-" + mm + "-" + dd;
-    this.inputDate = { value: today };
   }
 };
 </script>

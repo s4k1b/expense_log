@@ -2,19 +2,19 @@
   <div>
     <template
       v-if="
-        Object.keys(reversedFilteredLogs).length === 0 &&
-          reversedFilteredLogs.constructor === Object
+        Object.keys(filteredLogs).length === 0 &&
+          filteredLogs.constructor === Object
       "
     >
-      <ul class="mdc-list" ref="entrylist">
+      <ul ref="entrylist" class="mdc-list">
         <span>!! No Entries to show !!</span>
       </ul>
     </template>
     <template v-else>
-      <ul class="mdc-list mdc-list--two-line" ref="entrylist">
+      <ul ref="entrylist" class="mdc-list mdc-list--two-line">
         <li role="separator" class="mdc-list-divider"></li>
-        <template v-for="(value, key) in reversedFilteredLogs">
-          <li class="mdc-list-item entry-list-item" :key="`title-${key}`">
+        <template v-for="(value, key) in filteredLogs">
+          <li :key="`title-${key}`" class="mdc-list-item entry-list-item">
             <img class="entry-icon" :src="getIcon(value.type)" alt="icon" />
             <span class="mdc-list-item__text">
               <span class="mdc-list-item__primary-text entry-title">
@@ -28,7 +28,7 @@
               {{ getDate(value.date) || "" }}
             </span>
           </li>
-          <li role="separator" class="mdc-list-divider" :key="`hr-${key}`"></li>
+          <li :key="`hr-${key}`" role="separator" class="mdc-list-divider"></li>
         </template>
       </ul>
     </template>
@@ -43,15 +43,21 @@ import typesOfExpenses from "../../types_of_expenses.json";
 
 export default {
   computed: {
-    ...mapGetters(["filteredLogs"]),
+    ...mapGetters(["filteredLogs"])
+  },
 
-    reversedFilteredLogs() {
-      const keys = Object.keys(this.filteredLogs);
-      keys.reverse();
-      let o = {};
-      keys.forEach(key => (o[`${key}`] = this.filteredLogs[`${key}`]));
-      return o;
-    }
+  mounted() {
+    this.list = new MDCList(this.$refs.entrylist);
+    this.listripple = this.list.listElements.map(
+      listItemEl => new MDCRipple(listItemEl)
+    );
+  },
+
+  destroyed() {
+    this.list.destroy();
+    this.listripple.forEach(element => {
+      element.destroy();
+    });
   },
 
   methods: {
@@ -99,20 +105,6 @@ export default {
       const ico = typesOfExpenses.find(item => item.value === type).icon || "";
       return require("../../assets/icons/svg/" + ico + ".svg");
     }
-  },
-
-  mounted() {
-    this.list = new MDCList(this.$refs.entrylist);
-    this.listripple = this.list.listElements.map(
-      listItemEl => new MDCRipple(listItemEl)
-    );
-  },
-
-  destroyed() {
-    this.list.destroy();
-    this.listripple.forEach(element => {
-      element.destroy();
-    });
   }
 };
 </script>

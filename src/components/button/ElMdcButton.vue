@@ -1,10 +1,10 @@
 <template>
   <button
+    ref="button"
     class="mdc-button"
     :class="buttonClass"
-    ref="button"
-    @click="$emit('click')"
     :style="styleOb"
+    @click="$emit('click')"
   >
     <i class="material-icons mdc-button__icon" aria-hidden="true">{{ icon }}</i>
     <span class="mdc-button__label">{{ title }}</span>

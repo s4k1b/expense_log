@@ -1,23 +1,23 @@
 <template>
   <div
-    class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon"
     ref="input"
+    class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon"
   >
     <i class="material-icons mdc-text-field__icon">{{ icon }}</i>
     <input
-      :type="type"
       id="tf-outlined"
+      :type="type"
       class="mdc-text-field__input"
-      @input="emitValue($event.target.value)"
       :value="value"
+      @input="emitValue($event.target.value)"
     />
     <div class="mdc-notched-outline">
       <div class="mdc-notched-outline__leading"></div>
       <div class="mdc-notched-outline__notch">
         <label
+          ref="inputfloatinglabel"
           for="tf-outlined"
           class="mdc-floating-label"
-          ref="inputfloatinglabel"
           >{{ title }}</label
         >
       </div>
@@ -73,23 +73,28 @@ export default {
     this.textField = new MDCTextField(this.$refs.input);
     this.floatingLabel = new MDCFloatingLabel(this.$refs.inputfloatinglabel);
 
-    if (this.type === "date") {
-      var today = new Date();
-      var dd = today.getDate();
-      var mm = today.getMonth() + 1; //January is 0!
-      var yyyy = today.getFullYear();
+    if (this.type === "datetime-local") {
+      var today = new Date().toJSON().slice(0, 16);
+      // var dd = today.getDate();
+      // var mm = today.getMonth() + 1; //January is 0!
+      // var yyyy = today.getFullYear();
 
-      if (dd < 10) {
-        dd = "0" + dd;
-      }
+      // if (dd < 10) {
+      //   dd = "0" + dd;
+      // }
 
-      if (mm < 10) {
-        mm = "0" + mm;
-      }
+      // if (mm < 10) {
+      //   mm = "0" + mm;
+      // }
 
-      today = yyyy + "-" + mm + "-" + dd;
+      // today = yyyy + "-" + mm + "-" + dd;
       this.value = today;
     }
+  },
+
+  destroyed() {
+    this.textField.destroy();
+    this.floatingLabel.destroy();
   },
 
   methods: {
@@ -102,11 +107,6 @@ export default {
       };
       this.$emit("input", respOb);
     }
-  },
-
-  destroyed() {
-    this.textField.destroy();
-    this.floatingLabel.destroy();
   }
 };
 </script>

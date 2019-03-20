@@ -1,5 +1,5 @@
 <template>
-  <header class="mdc-top-app-bar" ref="topappbar" style="top: 0px; left: 0px;">
+  <header ref="topappbar" class="mdc-top-app-bar" style="top: 0px; left: 0px;">
     <div class="mdc-top-app-bar__row">
       <section
         class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start"
@@ -16,12 +16,12 @@
         role="toolbar"
       >
         <el-mdc-button
+          v-if="!displayName"
           title="Login"
           icon="person_outline"
-          @click="login()"
           type="raised"
-          :styleOb="{ 'background-color': '#009933' }"
-          v-if="!displayName"
+          :style-ob="{ 'background-color': '#009933' }"
+          @click="login()"
         ></el-mdc-button>
         <template v-else>
           <span class="profile">
@@ -31,9 +31,9 @@
           <el-mdc-button
             title="Logout"
             icon="power_settings_new"
-            @click="logout()"
             type="raised"
-            :styleOb="{ 'background-color': '#e63900' }"
+            :style-ob="{ 'background-color': '#e63900' }"
+            @click="logout()"
           ></el-mdc-button>
         </template>
       </section>
@@ -66,12 +66,6 @@ export default {
     }
   },
 
-  methods: {
-    goToHome() {
-      this.$router.push("/");
-    }
-  },
-
   mounted() {
     const topAppBarElement = this.$refs.topappbar;
     this.topAppBar = new MDCTopAppBar(topAppBarElement);
@@ -79,6 +73,12 @@ export default {
 
   destroyed() {
     this.topAppBar.destroy();
+  },
+
+  methods: {
+    goToHome() {
+      this.$router.push("/");
+    }
   }
 };
 </script>

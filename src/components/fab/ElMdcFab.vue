@@ -6,7 +6,7 @@
     @click="$emit('click')"
   >
     <span class="material-icons mdc-fab__icon">{{ icon }}</span>
-    <span class="mdc-fab__label" v-if="extended">{{ title }}</span>
+    <span v-if="extended" class="mdc-fab__label">{{ title }}</span>
   </button>
 </template>
 

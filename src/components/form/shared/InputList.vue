@@ -17,16 +17,16 @@
             <component
               :is="field.component"
               v-bind="getPropOb(field, index)"
-              @input="handle($event)"
               class="input-items"
+              @input="handle($event)"
             ></component>
           </li>
-          <div class="remove-btn-wrapper" v-show="respItem.delShow">
+          <div v-show="respItem.delShow" class="remove-btn-wrapper">
             <el-mdc-fab
+              :key="`resp-item-field-del-${respItem.id}`"
               icon="remove"
               class="remove-btn"
               @click="removeItem(index)"
-              :key="`resp-item-field-del-${respItem.id}`"
             ></el-mdc-fab>
           </div>
         </ul>
@@ -37,8 +37,8 @@
         icon="add"
         title="add"
         :extended="true"
-        @click="addItem()"
         class="add-btn"
+        @click="addItem()"
       ></el-mdc-fab>
     </div>
   </div>
@@ -50,6 +50,11 @@ import ElMdcSelect from "../../select/ElMdcSelect.vue";
 import ElMdcFab from "../../fab/ElMdcFab.vue";
 
 export default {
+  components: {
+    ElMdcInput,
+    ElMdcSelect,
+    ElMdcFab
+  },
   props: {
     fields: {
       type: Array,
@@ -69,10 +74,17 @@ export default {
     };
   },
 
-  components: {
-    ElMdcInput,
-    ElMdcSelect,
-    ElMdcFab
+  watch: {
+    respItems(newVal) {
+      let emitArr = newVal.map(item => {
+        let newItem = {};
+        Object.assign(newItem, item);
+        delete newItem.id;
+        delete newItem.delShow;
+        return newItem;
+      });
+      this.$emit("input", emitArr);
+    }
   },
 
   methods: {
@@ -102,19 +114,6 @@ export default {
       const date = new Date();
       const timestamp = date.getTime();
       this.respItems.push({ id: timestamp, delShow: false });
-    }
-  },
-
-  watch: {
-    respItems(newVal) {
-      let emitArr = newVal.map(item => {
-        let newItem = {};
-        Object.assign(newItem, item);
-        delete newItem.id;
-        delete newItem.delShow;
-        return newItem;
-      });
-      this.$emit("input", emitArr);
     }
   }
 };

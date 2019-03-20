@@ -13,8 +13,8 @@
         <div class="mdc-layout-grid__cell--span-3">
           <el-mdc-select
             v-bind="propObForSelectEntryType"
-            @input="$store.dispatch('selectedEntryType$set', $event.value)"
             class="select-entry"
+            @input="$store.dispatch('selectedEntryType$set', $event.value)"
           ></el-mdc-select>
         </div>
         <div class="mdc-layout-grid__cell--span-3">
@@ -26,8 +26,8 @@
           ></el-mdc-input>
         </div>
         <div
-          class="mdc-layout-grid__cell--span-4 pagination"
           v-show="paginationItemCount > 0"
+          class="mdc-layout-grid__cell--span-4 pagination"
         >
           <div class="mdc-layout-grid__inner">
             <div class="mdc-layout-grid__cell--span-7 pagi-info">
@@ -68,6 +68,13 @@ import { firebaseMixin } from "../mixins/firebase.js";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    ElMdcSelect,
+    ElMdcInput,
+    ElMdcFab,
+    EntryList
+  },
+  mixins: [firebaseMixin],
   data() {
     return {
       propObForSelectEntryType: {
@@ -77,15 +84,14 @@ export default {
       }
     };
   },
-  components: {
-    ElMdcSelect,
-    ElMdcInput,
-    ElMdcFab,
-    EntryList
-  },
-  mixins: [firebaseMixin],
   computed: {
     ...mapGetters(["pagination", "paginationItemCount"])
+  },
+  created() {
+    this.$store.commit("searchText$set", ""); // reset searchText
+    this.$store.commit("selectedEntryType$set", ""); // reset selectedType
+    this.$store.commit("pagination$set", { start: 0 }); // reset pagination
+    this.$store.commit("filteredLogs");
   },
   methods: {
     goToFormPage() {
@@ -111,12 +117,6 @@ export default {
       this.$store.commit("pagination$set", { start });
       this.$store.commit("filteredLogs");
     }
-  },
-  created() {
-    this.$store.commit("searchText$set", ""); // reset searchText
-    this.$store.commit("selectedEntryType$set", ""); // reset selectedType
-    this.$store.commit("pagination$set", { start: 0 }); // reset pagination
-    this.$store.commit("filteredLogs");
   }
 };
 </script>
