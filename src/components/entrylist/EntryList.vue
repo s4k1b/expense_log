@@ -14,7 +14,11 @@
       <ul ref="entrylist" class="mdc-list mdc-list--two-line">
         <li role="separator" class="mdc-list-divider"></li>
         <template v-for="(value, key) in filteredLogs">
-          <li :key="`title-${key}`" class="mdc-list-item entry-list-item">
+          <li
+            :key="`title-${key}`"
+            class="mdc-list-item entry-list-item"
+            @click.prevent="goToLog(key)"
+          >
             <img class="entry-icon" :src="getIcon(value.type)" alt="icon" />
             <span class="mdc-list-item__text">
               <span class="mdc-list-item__primary-text entry-title">
@@ -104,6 +108,10 @@ export default {
     getIcon(type) {
       const ico = typesOfExpenses.find(item => item.value === type).icon || "";
       return require("../../assets/icons/svg/" + ico + ".svg");
+    },
+
+    goToLog(logId) {
+      this.$router.push(`/logs/${logId}`);
     }
   }
 };

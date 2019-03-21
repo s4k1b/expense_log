@@ -39,12 +39,18 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+
+    propValue: {
+      type: String,
+      default: ""
     }
   },
 
   mounted() {
     this.textField = new MDCTextField(this.$refs.textarea);
     this.floatingLabel = new MDCFloatingLabel(this.$refs.textareafloatinglabel);
+    this.textField.value = this.propValue;
   },
 
   destroyed() {

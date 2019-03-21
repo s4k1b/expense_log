@@ -64,12 +64,22 @@ export default {
     span: {
       type: [Number, String],
       default: 3
+    },
+
+    propRespItems: {
+      type: Array,
+      default: () => []
     }
   },
 
   data() {
     return {
-      respItems: [{ id: 0, delShow: false }],
+      respItems: [
+        {
+          id: 0,
+          delShow: false
+        }
+      ],
       delShow: false
     };
   },
@@ -85,6 +95,19 @@ export default {
       });
       this.$emit("input", emitArr);
     }
+  },
+
+  mounted() {
+    //for supporting multiple items editing
+    if (this.propRespItems.length > 0)
+      this.respItems = this.propRespItems.map((item, index) => {
+        const date = new Date();
+        const timestamp = date.getTime();
+        this.$set(item, "id", `${timestamp}-${index}`);
+        this.$set(item, "delShow", false);
+        // Object.assign(item, { id: `${timestamp}-${index}`, delShow: false });
+        return item;
+      });
   },
 
   methods: {
@@ -103,6 +126,15 @@ export default {
         variableIndex: val
       });
       delete o.component;
+      //for details page edit button
+      if (
+        this.propRespItems.length > 0 &&
+        this.respItems.length <= this.propRespItems.length //to enable add button in LogDetails page
+      )
+        Object.assign(o, {
+          propValue: this.respItems[val][`${field.variableProp}`]
+        });
+
       return o;
     },
 

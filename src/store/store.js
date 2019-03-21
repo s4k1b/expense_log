@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     user: {},
     logs: {},
+    log: {},
     filteredLogs: {},
     searchText: "",
     selectedEntryType: "",

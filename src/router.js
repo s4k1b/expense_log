@@ -6,6 +6,8 @@ import ExpenseLog from "./views/ExpenseLog.vue";
 import RightSideBar from "./views/RightSideBar.vue";
 import LoginPage from "./views/LoginPage.vue";
 
+import LogDetails from "./views/LogDetails.vue";
+
 import EntryForm from "./views/EntryForm.vue";
 
 Vue.use(Router);
@@ -36,6 +38,15 @@ const router = new Router({
       components: {
         "left-side-bar": LeftSideBar,
         main: EntryForm,
+        "right-side-bar": RightSideBar
+      }
+    },
+    {
+      path: "/logs/:logid",
+      name: "logDetails",
+      components: {
+        "left-side-bar": LeftSideBar,
+        main: LogDetails,
         "right-side-bar": RightSideBar
       }
     }

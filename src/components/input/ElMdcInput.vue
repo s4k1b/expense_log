@@ -60,6 +60,11 @@ export default {
     variableIndex: {
       type: null,
       default: null
+    },
+
+    propValue: {
+      type: null,
+      default: null
     }
   },
 
@@ -89,6 +94,11 @@ export default {
 
       // today = yyyy + "-" + mm + "-" + dd;
       this.value = today;
+    }
+    if (this.propValue) {
+      this.textField.value = this.propValue;
+      // force emit the initial value to update items in LogDetails page
+      this.emitValue(this.propValue);
     }
   },
 

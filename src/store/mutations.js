@@ -70,5 +70,8 @@ export default {
       ...state.pagination,
       start: pagination.start
     };
+  },
+  log$set(state, o) {
+    state.log = o;
   }
 };

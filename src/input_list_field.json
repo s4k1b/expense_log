@@ -1,0 +1,86 @@
+{
+  "itemsFields": [
+    {
+      "title": "Item name",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "name"
+    },
+    {
+      "title": "Type",
+      "options": [
+        {
+          "title": "Foods",
+          "value": "foods"
+        },
+        {
+          "title": "Home Utils",
+          "value": "homeutils"
+        },
+        {
+          "title": "Clothes",
+          "value": "clothes"
+        },
+        {
+          "title": "Electronics",
+          "value": "electronics"
+        },
+        {
+          "title": "Furnitures",
+          "value": "furnitures"
+        }
+      ]
+      ,
+      "icon": "sort",
+      "component": "ElMdcSelect",
+      "variableProp": "type"
+    },
+    {
+      "title": "Amount",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "amount"
+    },
+    {
+      "title": "Cost per unit",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "cost"
+    }
+  ],
+  "giveFields": [
+    {
+      "title": "Recipient Name",
+      "icon": "person_outline",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "name"
+    },
+    {
+      "title": "Amount",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "amount"
+    }
+  ],
+  "receiveFields": [
+    {
+      "title": "Provider Name",
+      "icon": "person_outline",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "name"
+    },
+    {
+      "title": "Amount",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "amount"
+    }
+  ]
+}

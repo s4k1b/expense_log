@@ -74,6 +74,11 @@ export default {
     variableIndex: {
       type: null,
       default: null
+    },
+
+    propValue: {
+      type: null,
+      default: null
     }
   },
 
@@ -106,6 +111,8 @@ export default {
     });
 
     this.optionStyle.width = `${this.$refs.select.offsetWidth}px`;
+
+    if (this.propValue) this.select.value = this.propValue;
   },
 
   destroyed() {
