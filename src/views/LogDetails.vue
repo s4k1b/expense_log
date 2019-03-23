@@ -4,7 +4,7 @@
       <h2 class="form-header">{{ entryTitle }}</h2>
       <p class="date">{{ date }}</p>
     </div>
-    <div class="mdc-layout-grid__cell--span-12 header-div">
+    <div class="mdc-layout-grid__cell--span-12 inner-div">
       <div class="mdc-layout-grid__inner">
         <div class="mdc-layout-grid__cell--span-12 description-header">
           <h3 class="form-header sub-title">Description</h3>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="mdc-layout-grid__cell--span-12 header-div">
+    <div class="mdc-layout-grid__cell--span-12 inner-div">
       <div class="mdc-layout-grid__inner">
         <div class="mdc-layout-grid__cell--span-12 description-header">
           <h3 class="form-header sub-title">{{ itemsTitle }}</h3>
@@ -37,7 +37,12 @@
           ></el-mdc-fab>
         </div>
         <div class="mdc-layout-grid__cell--span-12">
-          <p v-if="!itemsEdit" class="description">{{ logItems }}</p>
+          <!-- <p v-if="!itemsEdit" class="description">{{ logItems }}</p> -->
+          <el-data-table
+            v-if="!itemsEdit"
+            :headers="fields"
+            :items="logItems"
+          ></el-data-table>
           <input-list
             v-else
             v-model="items"
@@ -48,9 +53,84 @@
         </div>
       </div>
     </div>
+    <template v-if="log && log.type === 'sharedcost'">
+      <div class="mdc-layout-grid__cell--span-12 inner-div">
+        <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell--span-12 description-header">
+            <h3 class="form-header sub-title">My payment</h3>
+            <el-mdc-fab
+              :icon="mpEditIcon"
+              class="mod-btn"
+              @click="mpEditFunc()"
+            ></el-mdc-fab>
+          </div>
+          <div class="mdc-layout-grid__cell--span-12">
+            <!-- <p v-if="!itemsEdit" class="description">{{ logItems }}</p> -->
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell--span-6">
+                <span v-if="!mpEdit">
+                  <strong>Paid:</strong>
+                  <span class="i-paid">{{ logPaid }}</span>
+                </span>
+
+                <el-mdc-input
+                  v-else
+                  v-model="paid"
+                  title="I paid"
+                  icon="create"
+                  type="text"
+                  :prop-value="logPaid"
+                ></el-mdc-input>
+              </div>
+              <div class="mdc-layout-grid__cell--span-6">
+                <span v-if="!mpEdit">
+                  <strong>Need to pay:</strong>
+                  <span class="i-need-to-pay">{{ logNeedToPay }}</span>
+                </span>
+                <el-mdc-input
+                  v-else
+                  v-model="needToPay"
+                  title="I need to pay"
+                  icon="create"
+                  type="text"
+                  :prop-value="logNeedToPay"
+                ></el-mdc-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mdc-layout-grid__cell--span-12 inner-div">
+        <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell--span-12 description-header">
+            <h3 class="form-header sub-title">Participants</h3>
+            <el-mdc-fab
+              :icon="parEditIcon"
+              class="mod-btn"
+              @click="parEditFunc()"
+            ></el-mdc-fab>
+          </div>
+          <div class="mdc-layout-grid__cell--span-12">
+            <!-- <p v-if="!itemsEdit" class="description">{{ logItems }}</p> -->
+            <el-data-table
+              v-if="!parEdit"
+              :headers="participantsFields"
+              :items="logParticipants"
+            ></el-data-table>
+            <input-list
+              v-else
+              v-model="participants"
+              :fields="participantsFields"
+              :prop-resp-items="logParticipants"
+              :span="parListSpan"
+            ></input-list>
+          </div>
+        </div>
+      </div>
+    </template>
     <!-- <div class="mdc-layout-grid__cell--span-12">
       <component :is="form"></component>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -60,14 +140,17 @@ import { mapGetters } from "vuex";
 import expenseTypes from "../types_of_expenses.json";
 import ElMdcFab from "../components/fab/ElMdcFab.vue";
 import ElMdcTextArea from "../components/input/ElMdcTextArea.vue";
+import ElMdcInput from "../components/input/ElMdcInput";
 import InputList from "../components/form/shared/InputList.vue";
 import inputListField from "../input_list_field.json";
-
+import ElDataTable from "../components/datatable/ElDataTable";
 export default {
   components: {
     ElMdcFab,
     ElMdcTextArea,
-    InputList
+    ElMdcInput,
+    InputList,
+    ElDataTable
   },
 
   mixins: [databaseMixin],
@@ -79,7 +162,14 @@ export default {
       desEditIcon: "create",
       items: [],
       itemsEdit: false,
-      itemsEditIcon: "create"
+      itemsEditIcon: "create",
+      participants: [],
+      parEdit: false,
+      parEditIcon: "create",
+      paid: null,
+      needToPay: null,
+      mpEdit: false,
+      mpEditIcon: "create"
     };
   },
 
@@ -92,6 +182,21 @@ export default {
 
     logItems() {
       return (this.log && this.log.items) || [];
+    },
+
+    logParticipants() {
+      return (
+        (this.log && this.log.type === "sharedcost" && this.log.participants) ||
+        []
+      );
+    },
+
+    logPaid() {
+      return (this.log && this.log.iPaid) || null;
+    },
+
+    logNeedToPay() {
+      return (this.log && this.log.iNeedToPay) || null;
     },
 
     entryTitle() {
@@ -121,10 +226,18 @@ export default {
       else return [];
     },
 
+    participantsFields() {
+      return inputListField.participantsFields;
+    },
+
     inputListSpan() {
       const type = (this.log && this.log.type) || "";
       if (type === "personalcost" || type === "sharedcost") return 3;
       else return 6;
+    },
+
+    parListSpan() {
+      return 4;
     },
 
     date() {
@@ -138,6 +251,15 @@ export default {
     },
     logItems(newVal) {
       this.items = newVal;
+    },
+    logParticipants(newVal) {
+      this.participants = newVal;
+    },
+    logPaid(newVal) {
+      this.paid = newVal;
+    },
+    logNeedToPay(newVal) {
+      this.needToPay = newVal;
     }
   },
 
@@ -167,6 +289,33 @@ export default {
       } else {
         this.itemsEdit = true;
         this.itemsEditIcon = "exit_to_app";
+      }
+    },
+    parEditFunc() {
+      if (this.parEdit) {
+        this.parEdit = false;
+        this.parEditIcon = "create";
+        this.update(
+          this.participants,
+          `${this.$route.params.logid}/participants`
+        );
+      } else {
+        this.parEdit = true;
+        this.parEditIcon = "exit_to_app";
+      }
+    },
+    mpEditFunc() {
+      if (this.mpEdit) {
+        this.mpEdit = false;
+        this.mpEditIcon = "create";
+        this.update(this.paid.value, `${this.$route.params.logid}/iPaid`);
+        this.update(
+          this.needToPay.value,
+          `${this.$route.params.logid}/iNeedToPay`
+        );
+      } else {
+        this.mpEdit = true;
+        this.mpEditIcon = "exit_to_app";
       }
     },
     getDate(date) {
@@ -219,6 +368,15 @@ export default {
   background-color: rgb(221, 225, 231);
 }
 
+.inner-div {
+  padding: 2%;
+  border-radius: 5px 20px 10px 15px;
+  border-left: 5px solid #0077ce;
+  border-bottom: 0px solid #0077ce;
+  box-shadow: 0px 0px 3px grey;
+  background-color: rgb(255, 255, 255);
+}
+
 .form-div {
   padding: 4%;
   border: 0px solid grey;
@@ -245,5 +403,17 @@ export default {
 .date {
   text-align: right;
   margin-top: 5px;
+}
+
+.i-paid {
+  padding: 1em;
+  color: rgb(38, 116, 38);
+  font-weight: 900;
+}
+
+.i-need-to-pay {
+  padding: 1em;
+  color: rgb(192, 45, 26);
+  font-weight: 900;
 }
 </style>

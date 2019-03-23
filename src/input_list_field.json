@@ -82,5 +82,28 @@
       "component": "ElMdcInput",
       "variableProp": "amount"
     }
+  ],
+  "participantsFields": [
+    {
+      "title": "Name",
+      "icon": "person_outline",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "name"
+    },
+    {
+      "title": "Need to pay",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "needToPay"
+    },
+    {
+      "title": "Paid",
+      "icon": "create",
+      "type": "text",
+      "component": "ElMdcInput",
+      "variableProp": "paid"
+    }
   ]
 }

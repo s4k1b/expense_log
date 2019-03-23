@@ -197,8 +197,8 @@ export default {
             date: this.convDateStrToNum(this.inputDate.value),
             description: this.description,
             items: this.itemList,
-            iNeedToPay: this.needToPay,
-            iPaid: this.paid,
+            iNeedToPay: this.needToPay.value,
+            iPaid: this.paid.value,
             participants: this.participantList
           };
 
