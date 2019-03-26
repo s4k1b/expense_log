@@ -72,8 +72,10 @@ import ElMdcTextArea from "../input/ElMdcTextArea.vue";
 import ElMdcInput from "../input/ElMdcInput.vue";
 import ElMdcButton from "../button/ElMdcButton.vue";
 import InputList from "./shared/InputList.vue";
-import itemTypes from "../../types_of_items.json";
+import inputListField from "../../input_list_field.json";
 import { databaseMixin } from "../../mixins/database.js";
+import { chartMixin } from "../../mixins/chart.js";
+import { mapGetters } from "vuex";
 
 //import writeOb from "../../write.js";
 
@@ -85,64 +87,13 @@ export default {
     InputList
   },
 
-  mixins: [databaseMixin],
+  mixins: [databaseMixin, chartMixin],
   data() {
     return {
       description: "",
-      fields: [
-        {
-          title: "Item name",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "name"
-        },
-        {
-          title: "Type",
-          options: itemTypes,
-          icon: "sort",
-          component: "ElMdcSelect",
-          variableProp: "type"
-        },
-        {
-          title: "Amount",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "amount"
-        },
-        {
-          title: "Cost per unit",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "cost"
-        }
-      ],
+      fields: inputListField.itemsFields,
 
-      participantsField: [
-        {
-          title: "Name",
-          icon: "person_outline",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "name"
-        },
-        {
-          title: "Need to pay",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "needToPay"
-        },
-        {
-          title: "Paid",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "paid"
-        }
-      ],
+      participantsField: inputListField.participantsFields,
 
       inputDate: "",
       needToPay: 0,
@@ -154,6 +105,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["users"]),
     totalCost() {
       if (this.itemList.length == 0) return 0;
       return this.itemList.reduce(function(total, currentVal) {
@@ -172,13 +124,24 @@ export default {
       const d = new Date(str);
       return d.getTime();
     },
+
+    findUserInfo(email) {
+      return Object.values(this.users).find(ob => ob.email === email);
+    },
+
     addEntry() {
+      //get user info
+      this.participantList.forEach(item => {
+        const userInfo = this.findUserInfo(item.email);
+        this.$set(item, "userInfo", userInfo);
+      });
+
       const ind = this.itemList.find(item => {
         if (item.name && item.type && item.amount && item.cost) return false;
         else return true;
       });
       const indP = this.participantList.find(part => {
-        if (part.name && part.needToPay && part.paid) return false;
+        if (part.email && part.needToPay && part.paid) return false;
         else return true;
       });
       if (
@@ -192,6 +155,20 @@ export default {
         if (this.inputDate && this.description && this.needToPay && this.paid) {
           // Create entry object
           this.emptyField = false;
+
+          const ind2 = this.participantList.find(item => {
+            if (item.userInfo) return false;
+            else return true;
+          });
+
+          if (ind2) {
+            this.$snack.unsuccessful({
+              text: "Email not found in databse",
+              button: "⚠"
+            });
+            return;
+          }
+
           const entryOb = {
             type: "sharedcost",
             date: this.convDateStrToNum(this.inputDate.value),
@@ -199,7 +176,12 @@ export default {
             items: this.itemList,
             iNeedToPay: this.needToPay.value,
             iPaid: this.paid.value,
-            participants: this.participantList
+            participants: this.participantList,
+            chart: this.calculateChart(
+              this.participantList,
+              this.paid.value,
+              this.needToPay.value
+            )
           };
 
           this.addEntryToDb(entryOb);

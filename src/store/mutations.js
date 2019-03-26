@@ -2,6 +2,9 @@ export default {
   user$set(state, o) {
     state.user = o;
   },
+  users$set(state, o) {
+    state.users = o;
+  },
   logs$set(state, o) {
     //sort item by date
     let newOb = {};
@@ -24,7 +27,9 @@ export default {
     if (state.searchText) {
       const regExp = new RegExp(state.searchText, "i");
       const logKeys = Object.keys(state.logs).filter(log => {
-        const items = state.logs[`${log}`].items.map(item => item.name);
+        const items = state.logs[`${log}`].items.map(
+          item => (item.userInfo && item.userInfo.fullName) || item.name
+        );
         const sText = Object.values(items).join(", ");
         const res = sText.search(regExp);
         return res > -1;

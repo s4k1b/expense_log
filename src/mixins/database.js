@@ -44,6 +44,17 @@ export const databaseMixin = {
       }
     },
 
+    async addUserInfo(infoOb) {
+      await firebase
+        .database()
+        .ref("/users/" + this.userId)
+        .set({ ...infoOb, userId: this.userId }, function(error) {
+          if (error) {
+            // console.log("Error: ", error);
+          }
+        });
+    },
+
     async update(value, entryKey) {
       let success = false;
       await firebase
@@ -88,6 +99,26 @@ export const databaseMixin = {
       entryRef.on("value", function(snapshot) {
         vm.$store.commit("log$set", snapshot.val());
       });
+    },
+
+    async getUsers() {
+      const vm = this;
+      await firebase
+        .database()
+        .ref("/users")
+        .once("value")
+        .then(function(snapshot) {
+          // console.log("snapshot ", snapshot.val());
+          if (snapshot) {
+            vm.$store.commit("users$set", snapshot.val());
+          }
+        });
+      // if (ans) {
+      //   let keys = Object.keys(ans);
+      //   ans = ans[`${keys[0]}`];
+      // }
+      // console.log("ans: ", ans);
+      // return ans;
     }
   }
 };

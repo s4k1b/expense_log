@@ -1,13 +1,20 @@
 <template>
   <table>
     <tr>
-      <th v-for="header in headers" :key="header.title">{{ header.title }}</th>
+      <th v-for="header in headers" :key="header.title">
+        {{ header.tableTitle || header.title }}
+      </th>
     </tr>
     <tr v-for="item in items" :key="JSON.stringify(item)">
       <td
         v-for="header in headers"
         :key="`${header.variableProp}-${JSON.stringify(item)}`"
       >
+        <img
+          v-if="header.variableProp === 'email'"
+          :src="item.userInfo.profilePic"
+          class="profile-pic"
+        />
         {{ getValue(item, header, header.variableProp) }}
       </td>
     </tr>
@@ -30,7 +37,9 @@ export default {
   methods: {
     getValue(item, header, prop) {
       const returnVal = item[`${prop}`];
-      if (prop === "type") {
+      if (prop === "email") {
+        return item.userInfo.fullName;
+      } else if (prop === "type") {
         return header.options.find(item => item.value === returnVal).title;
       } else return returnVal;
     }

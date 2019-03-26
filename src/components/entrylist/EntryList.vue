@@ -70,10 +70,13 @@ export default {
     },
 
     getItems(items) {
+      // console.log("items: ", items);
       let s = "";
       for (let i = 0; i < items.length; i++) {
         if (i > 0) s += ", ";
-        s += `${items[i].name}`;
+        if (items[i].email) {
+          s += `${items[i].userInfo && items[i].userInfo.fullName}`;
+        } else s += `${items[i].name}`;
       }
       return s;
     },

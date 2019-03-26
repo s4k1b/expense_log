@@ -42,8 +42,10 @@
 import ElMdcTextArea from "../input/ElMdcTextArea.vue";
 import ElMdcInput from "../input/ElMdcInput.vue";
 import ElMdcButton from "../button/ElMdcButton.vue";
+import inputListField from "../../input_list_field.json";
 import InputList from "./shared/InputList.vue";
 import { databaseMixin } from "../../mixins/database.js";
+import { mapGetters } from "vuex";
 
 //import writeOb from "../../write.js";
 
@@ -59,22 +61,7 @@ export default {
   data() {
     return {
       description: "",
-      fields: [
-        {
-          title: "Provider Name",
-          icon: "person_outline",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "name"
-        },
-        {
-          title: "Amount",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "amount"
-        }
-      ],
+      fields: inputListField.receiveFields,
 
       inputDate: "",
       itemList: [],
@@ -83,6 +70,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["users"]),
     totalCost() {
       if (this.itemList.length == 0) return 0;
       return this.itemList.reduce(function(total, currentVal) {
@@ -101,9 +89,18 @@ export default {
       const d = new Date(str);
       return d.getTime();
     },
+    findUserInfo(email) {
+      return Object.values(this.users).find(ob => ob.email === email);
+    },
     addEntry() {
+      //get user info
+      this.itemList.forEach(item => {
+        const userInfo = this.findUserInfo(item.email);
+        this.$set(item, "userInfo", userInfo);
+      });
+      // console.log("itemList: ", this.itemList);
       const ind = this.itemList.find(item => {
-        if (item.name && item.amount) return false;
+        if (item.email && item.amount) return false;
         else return true;
       });
       if (this.itemList.length === 0 || ind) {
@@ -112,6 +109,21 @@ export default {
         if (this.inputDate && this.description) {
           // Create entry object
           this.emptyField = false;
+
+          const ind2 = this.itemList.find(item => {
+            if (item.userInfo) return false;
+            else return true;
+          });
+
+          // console.log("ind2: ", ind2);
+
+          if (ind2) {
+            this.$snack.unsuccessful({
+              text: "Email not found in databse",
+              button: "⚠"
+            });
+            return;
+          }
           const entryOb = {
             type: "moneyloanedfrom",
             date: this.convDateStrToNum(this.inputDate.value),

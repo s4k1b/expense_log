@@ -127,6 +127,42 @@
           </div>
         </div>
       </div>
+
+      <!-- ******************** Chart div ********************** -->
+
+      <div class="mdc-layout-grid__cell--span-12 inner-div">
+        <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell--span-12 description-header">
+            <h3 class="form-header sub-title">Chart</h3>
+          </div>
+          <div class="mdc-layout-grid__cell--span-12">
+            <el-chart :chart="logChart"></el-chart>
+          </div>
+          <template v-if="logChart.unHandled">
+            <h3 class="form-header sub-title red-color">Missmatch</h3>
+            <div
+              v-for="(prop, key) in logChart.unHandled"
+              :key="`${prop}-${key}`"
+              class="mdc-layout-grid__cell--span-12"
+            >
+              <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell--span-6">
+                  <span>
+                    <strong>Name:</strong>
+                    <span class="i-need-to-pay red-color">{{ key }}</span>
+                  </span>
+                </div>
+                <div class="mdc-layout-grid__cell--span-6">
+                  <span>
+                    <strong>Missmatch amount:</strong>
+                    <span class="i-need-to-pay">{{ prop }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
     </template>
     <!-- <div class="mdc-layout-grid__cell--span-12">
       <component :is="form"></component>
@@ -144,16 +180,19 @@ import ElMdcInput from "../components/input/ElMdcInput";
 import InputList from "../components/form/shared/InputList.vue";
 import inputListField from "../input_list_field.json";
 import ElDataTable from "../components/datatable/ElDataTable";
+import ElChart from "../components/chart/ElChart";
+import { chartMixin } from "../mixins/chart.js";
 export default {
   components: {
     ElMdcFab,
     ElMdcTextArea,
     ElMdcInput,
     InputList,
-    ElDataTable
+    ElDataTable,
+    ElChart
   },
 
-  mixins: [databaseMixin],
+  mixins: [databaseMixin, chartMixin],
 
   data() {
     return {
@@ -197,6 +236,10 @@ export default {
 
     logNeedToPay() {
       return (this.log && this.log.iNeedToPay) || null;
+    },
+
+    logChart() {
+      return (this.log && this.log.chart) || {};
     },
 
     entryTitle() {
@@ -299,6 +342,14 @@ export default {
           this.participants,
           `${this.$route.params.logid}/participants`
         );
+        this.update(
+          this.calculateChart(
+            this.participants,
+            (this.paid && this.paid.value) || this.logPaid,
+            (this.needToPay && this.needToPay.value) || this.logNeedToPay
+          ),
+          `${this.$route.params.logid}/chart`
+        );
       } else {
         this.parEdit = true;
         this.parEditIcon = "exit_to_app";
@@ -312,6 +363,14 @@ export default {
         this.update(
           this.needToPay.value,
           `${this.$route.params.logid}/iNeedToPay`
+        );
+        this.update(
+          this.calculateChart(
+            this.participants || this.logParticipants,
+            this.paid.value,
+            this.needToPay.value
+          ),
+          `${this.$route.params.logid}/chart`
         );
       } else {
         this.mpEdit = true;
@@ -415,5 +474,9 @@ export default {
   padding: 1em;
   color: rgb(192, 45, 26);
   font-weight: 900;
+}
+
+.red-color {
+  color: rgb(192, 45, 26);
 }
 </style>

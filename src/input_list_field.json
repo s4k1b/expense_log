@@ -53,11 +53,12 @@
   ],
   "giveFields": [
     {
-      "title": "Recipient Name",
-      "icon": "person_outline",
-      "type": "text",
+      "title": "Recipient Email",
+      "tableTitle": "Recipient Name",
+      "icon": "alternate_email",
+      "type": "email",
       "component": "ElMdcInput",
-      "variableProp": "name"
+      "variableProp": "email"
     },
     {
       "title": "Amount",
@@ -69,11 +70,12 @@
   ],
   "receiveFields": [
     {
-      "title": "Provider Name",
-      "icon": "person_outline",
-      "type": "text",
+      "title": "Provider Email",
+      "tableTitle": "Provider Name",
+      "icon": "alternate_email",
+      "type": "email",
       "component": "ElMdcInput",
-      "variableProp": "name"
+      "variableProp": "email"
     },
     {
       "title": "Amount",
@@ -85,11 +87,12 @@
   ],
   "participantsFields": [
     {
-      "title": "Name",
-      "icon": "person_outline",
-      "type": "text",
+      "title": "Participant Email",
+      "tableTitle": "Participant Name",
+      "icon": "alternate_email",
+      "type": "email",
       "component": "ElMdcInput",
-      "variableProp": "name"
+      "variableProp": "email"
     },
     {
       "title": "Need to pay",
