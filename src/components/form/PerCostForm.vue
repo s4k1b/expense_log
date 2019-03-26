@@ -43,7 +43,7 @@ import ElMdcTextArea from "../input/ElMdcTextArea.vue";
 import ElMdcInput from "../input/ElMdcInput.vue";
 import ElMdcButton from "../button/ElMdcButton.vue";
 import InputList from "./shared/InputList.vue";
-import itemTypes from "../../types_of_items.json";
+import inputListField from "../../input_list_field.json";
 import { databaseMixin } from "../../mixins/database.js";
 
 //import writeOb from "../../write.js";
@@ -60,37 +60,7 @@ export default {
   data() {
     return {
       description: "",
-      fields: [
-        {
-          title: "Item name",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "name"
-        },
-        {
-          title: "Type",
-          options: itemTypes,
-          icon: "sort",
-          component: "ElMdcSelect",
-          variableProp: "type"
-        },
-        {
-          title: "Amount",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "amount"
-        },
-        {
-          title: "Cost per unit",
-          icon: "create",
-          type: "text",
-          component: "ElMdcInput",
-          variableProp: "cost"
-        }
-      ],
-
+      fields: inputListField.itemsFields,
       inputDate: "",
       itemList: [],
       emptyField: false

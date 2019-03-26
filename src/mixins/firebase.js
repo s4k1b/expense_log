@@ -37,6 +37,12 @@ export const firebaseMixin = {
       if (userOb) {
         this.$store.commit("user$set", { ...userOb });
         await this.getEntryList();
+        await this.addUserInfo({
+          fullName: userOb.displayName,
+          email: userOb.email,
+          profilePic: userOb.photoURL
+        });
+        await this.getUsers();
         this.$router.push("/");
       }
     },
