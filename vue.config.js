@@ -1,5 +1,7 @@
 const path = require("path");
 module.exports = {
+  publicPath: process.env.NODE_ENV === "production" ? "/expense-log/" : "/",
+
   configureWebpack: config => {
     config.resolve.alias["vue-mdc-adapter"] = "vue-mdc-adapter/dist/";
   },
@@ -15,9 +17,7 @@ module.exports = {
   },
   css: {
     loaderOptions: {
-      sass: {
-        includePaths: [path.resolve(__dirname, "node_modules")]
-      }
+      sass: { includePaths: [path.resolve(__dirname, "node_modules")] }
     }
   },
   pluginOptions: {
