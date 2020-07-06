@@ -22,7 +22,7 @@
     "@material/theme": "^0.43.0",
     "@material/top-app-bar": "^1.0.0",
     "firebase": "^5.8.5",
-    "npm": "^6.9.0",
+    "npm": "^6.13.4",
     "vue": "^2.5.22",
     "vue-cool-select": "^2.9.0",
     "vue-datepicker": "^1.3.0",
